@@ -18,7 +18,7 @@ pipeline {
                 //
                 sh '''
                 pwd
-                docker run -e SONAR_HOST_URL=http://sanjar1c.mylabserver.com --user="$(id -u):$(id -g)" -i -v "/tmp/sonar-scanning-examples/sonarqube-scanner:/usr/src" sonarsource/sonar-scanner-cli
+                docker run -e SONAR_HOST_URL=http://myhost.com --user="$(id -u):$(id -g)" -i -v "/tmp/sonar-scanning-examples/sonarqube-scanner:/usr/src" sonarsource/sonar-scanner-cli
                 ls -lah
                 '''
             }
