@@ -2,32 +2,31 @@ pipeline {
     agent any
 
     // ENV vars
-    environment {
-        PATH = "/opt/maven3/bin:$PATH"
-    }
+    //environment {
+    //    PATH = "/opt/maven3/bin:$PATH"
+    //}
 
     stages {
-        stage('Build') {
+        stage('Docker Pull the Sonar Scanner CLI Image') {
             steps {
                 //
-                echo "Hello World"
+                sh "docker pull sonarsource/sonar-scanner-cli"
             }
         }
-        stage('Test') {
+        stage('Create Docker Container to Run Sonar Scanner on the source files') {
             steps {
                 //
-                echo "testing . . ."
+                sh '''
+                pwd
+                docker run -e SONAR_HOST_URL=http://sanjar1c.mylabserver.com --user="$(id -u):$(id -g)" -it -v "/tmp/sonar-scanning-examples/sonarqube-scanner:/usr/src" sonarsource/sonar-scanner-cli
+                ll -ah
+                '''
             }
         }
-        stage("Maven Build"){
-            steps {
-                sh "mvn clean package"
-            }
-        }
-        stage('Deploy') {
+        stage('Scan Finished') {
             steps {
                 //
-                echo "deploying"
+                echo "SonarQube Scanning Finished"
             }
         }
     }
